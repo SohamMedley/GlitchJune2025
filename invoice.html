@@ -260,17 +260,18 @@
             50% { transform: scale(1.05); }
         }
 
-        .thank-you {
+        /* QR Code Payment Section */
+        .payment-section {
             text-align: center;
             margin-top: 60px;
             padding: 40px;
             background: rgba(0, 255, 255, 0.03);
             border-radius: 20px;
             border: 2px solid rgba(0, 255, 255, 0.15);
-            animation: thankYouGlow 4s ease-in-out infinite;
+            animation: paymentGlow 4s ease-in-out infinite;
         }
 
-        @keyframes thankYouGlow {
+        @keyframes paymentGlow {
             0%, 100% { 
                 box-shadow: 0 0 30px rgba(0, 255, 255, 0.15);
                 border-color: rgba(0, 255, 255, 0.15);
@@ -281,23 +282,90 @@
             }
         }
 
-        .thank-you h2 {
-            font-size: 2.8rem;
+        .payment-section h3 {
+            font-size: 2rem;
             margin-bottom: 20px;
             background: linear-gradient(45deg, #ffffff, #00ffff, #0099cc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            font-weight: 800;
+            font-weight: 700;
             font-family: 'Poppins', sans-serif;
         }
 
-        .thank-you p {
-            font-size: 1.3rem;
+        .payment-section p {
+            font-size: 1.1rem;
             color: #e8e8e8;
-            font-weight: 400;
-            line-height: 1.6;
+            margin-bottom: 30px;
             font-family: 'Poppins', sans-serif;
+        }
+
+        .qr-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .qr-code {
+            width: 250px;
+            height: 250px;
+            border-radius: 20px;
+            border: 3px solid rgba(0, 255, 255, 0.3);
+            transition: all 0.4s ease;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            animation: qrFadeIn 1s ease-out 0.8s both;
+        }
+
+        @keyframes qrFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .qr-code:hover {
+            transform: scale(1.05);
+            border-color: #00ffff;
+            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.3);
+        }
+
+        .download-btn {
+            background: linear-gradient(45deg, #00ffff, #0099cc);
+            color: #000000;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 25px rgba(0, 255, 255, 0.2);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 255, 255, 0.4);
+            background: linear-gradient(45deg, #0099cc, #00ffff);
+        }
+
+        .download-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .download-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
         }
 
         .floating-elements {
@@ -379,12 +447,37 @@
                 font-size: 1.8rem;
             }
 
-            .thank-you h2 {
-                font-size: 2.2rem;
+            .payment-section {
+                padding: 30px 20px;
             }
 
-            .thank-you p {
-                font-size: 1.1rem;
+            .payment-section h3 {
+                font-size: 1.6rem;
+            }
+
+            .qr-code {
+                width: 200px;
+                height: 200px;
+            }
+
+            .download-btn {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .qr-code {
+                width: 180px;
+                height: 180px;
+            }
+
+            .payment-section h3 {
+                font-size: 1.4rem;
+            }
+
+            .payment-section p {
+                font-size: 1rem;
             }
         }
     </style>
@@ -462,9 +555,18 @@
             </div>
         </div>
 
-        <div class="thank-you">
-            <h2>Thank You!</h2>
-            <p>Dear <strong>Glitch Reacts</strong>, we appreciate your content and look forward to continuing our work.</p>
+        <div class="payment-section">
+            <h3>Scan to Pay</h3>
+            <p>Use any UPI app to scan the QR code and make payment</p>
+            <div class="qr-container">
+                <img src="Images/pay.png" alt="Payment QR Code" class="qr-code" id="qr-image">
+                <button class="download-btn" onclick="downloadQR()">
+                    <svg class="download-icon" viewBox="0 0 24 24">
+                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                    </svg>
+                    Download QR Code
+                </button>
+            </div>
         </div>
     </div>
 
@@ -498,6 +600,16 @@
                     item.style.transform = 'translateX(0) scale(1)';
                 });
             });
+        }
+
+        // Download QR Code function
+        function downloadQR() {
+            const link = document.createElement('a');
+            link.href = 'Images/pay.png';
+            link.download = 'pay.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
         // Add sparkle effect on click
